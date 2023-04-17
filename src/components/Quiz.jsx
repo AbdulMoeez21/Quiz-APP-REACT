@@ -43,13 +43,13 @@ function Quiz() {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="m-10">
-     <div className="flex items-center justify-center my-10 -ml-16">
-    <p className="text-sm font-medium text-gray-500 ">
+    <div className="">
+     <div className="flex items-center justify-center md:mt-10 mt-10 -ml-16">
+    <p className="text-sm font-medium text-gray-500 md:pl-12 pl-12">
    Question {currentQuestionIndex + 1} of {questions.length}
 </p>
     </div>
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen ">
     
 
       <div className="w-full max-w-md px-4 py-8 bg-white rounded-lg shadow-lg">
