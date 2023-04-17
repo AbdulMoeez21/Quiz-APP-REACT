@@ -49,7 +49,7 @@ function Quiz() {
    Question {currentQuestionIndex + 1} of {questions.length}
 </p>
     </div>
-    <div className="flex flex-col items-center justify-center min-h-screen md:-mt-5 -mt-10">
+    <div className="flex flex-col items-center justify-center min-h-screen md:-mt-5 -mt-32">
     
 
       <div className="w-full max-w-md px-4 py-8 bg-white rounded-lg shadow-lg">
