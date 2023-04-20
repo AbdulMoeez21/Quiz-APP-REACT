@@ -1,13 +1,12 @@
-
 import React, { useState } from "react";
-
- import {questions} from '../constants/Constants'
+import { questions } from "../constants/Constants";
 
 function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answerStatus, setAnswerStatus] = useState(null);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   function handleOptionClick(index) {
     setSelectedOptionIndex(index);
@@ -20,6 +19,7 @@ function Quiz() {
       setSelectedOptionIndex(-1);
       setShowExplanation(false);
       setAnswerStatus(null);
+      setShowErrorMessage(false);
     }
   }
 
@@ -29,64 +29,72 @@ function Quiz() {
       setSelectedOptionIndex(-1);
       setShowExplanation(false);
       setAnswerStatus(null);
+      setShowErrorMessage(false);
     }
   }
 
   function handleSubmitClick() {
-    const selectedOption = currentQuestion.options[selectedOptionIndex];
-    const isCorrect =
-      selectedOption !== undefined && selectedOption === currentQuestion.answer;
-    setAnswerStatus(isCorrect);
-    setShowExplanation(true);
+    if (selectedOptionIndex === -1) {
+      setShowErrorMessage(true);
+    } else {
+      const selectedOption = currentQuestion.options[selectedOptionIndex];
+      const isCorrect =
+        selectedOption !== undefined && selectedOption === currentQuestion.answer;
+      setAnswerStatus(isCorrect);
+      setShowExplanation(true);
+      setShowErrorMessage(false);
+    }
   }
 
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div className="">
-     <div className="flex items-center justify-center md:mt-10 mt-10 -ml-16">
-    <p className="text-sm font-medium text-gray-500 md:pl-12 pl-12">
-   Question {currentQuestionIndex + 1} of {questions.length}
-</p>
-    </div>
-    <div className="flex flex-col items-center justify-center min-h-screen md:-mt-5 sm:-mt-16 -mt-20">
-    
-
-      <div className="w-full max-w-md px-4 py-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-xl font-bold mb-4">{currentQuestion.question}</h1>
-        <div className="flex flex-col space-y-4">
-          {currentQuestion.options.map((option, index) => (
-            <button
-              key={index}
-              className={`p-4 rounded-lg ${
-                selectedOptionIndex === index
-                  ? answerStatus === null
-                    ? "bg-blue-200 text-gray-900"
-                    : answerStatus
-                    ? "bg-green-50 text-white"
-                    : "bg-red-50-50 text-white"
-                  : "bg-gray-100 hover:bg-gray-200 text-gray-900"
-              }`}
-              onClick={() => handleOptionClick(index)}
-              style={{
-                backgroundColor:
-                  answerStatus === false && currentQuestion.answer === option
-                    ? "lightgreen"
-                    : answerStatus === true && currentQuestion.answer === option
-                    ? "lightgreen"
-                    : answerStatus === false && selectedOptionIndex === index
-                    ? "lightcoral"
-                    : undefined,
-                color:
-                  answerStatus === false && selectedOptionIndex === index
-                    ? "white"
-                    : undefined,
-              }}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
+      <div className="flex items-center justify-center md:mt-10 mt-10 -ml-16">
+        <p className="text-sm font-medium text-gray-500 md:pl-12 pl-12">
+          Question {currentQuestionIndex + 1} of {questions.length}
+        </p>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen md:-mt-5 sm:-mt-16 -mt-20">
+        <div className="w-full max-w-md px-4 py-8 bg-white rounded-lg shadow-lg">
+          <h1 className="text-xl font-bold mb-4">{currentQuestion.question}</h1>
+          <div className="flex flex-col space-y-4">
+            {currentQuestion.options.map((option, index) => (
+              <button
+                key={index}
+                className={`p-4 rounded-lg ${
+                  selectedOptionIndex === index
+                    ? answerStatus === null
+                      ? "bg-blue-200 text-gray-900"
+                      : answerStatus
+                      ? "bg-green-50 text-white"
+                      : "bg-red-50-50 text-white"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-900"
+                }`}
+                onClick={() => handleOptionClick(index)}
+                style={{
+                  backgroundColor:
+                    answerStatus === false && currentQuestion.answer === option
+                      ? "lightgreen"
+                      : answerStatus === true && currentQuestion.answer === option
+                      ? "lightgreen"
+                      : answerStatus === false && selectedOptionIndex === index
+                      ? "lightcoral"
+                      : undefined,
+                  color:
+                    answerStatus === false && selectedOptionIndex === index
+                      ? "white"
+                      : undefined,
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+       
+        {showErrorMessage && (
+          <p className="text-red-600 mt-2">Please select any option</p>
+        )}
         <div className="flex justify-between mt-8">
           <button
             className="p-4 rounded-lg bg-gray-700 hover:bg-gray-800 text-gray-100"
